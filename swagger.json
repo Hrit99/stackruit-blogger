@@ -1,0 +1,341 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "API Documentation for Stackruit Blogger App in Node.js Using Swagger",
+        "description": "Blogger restful webservice documentation.",
+        "license": {
+            "name": "Stackruit"
+        }
+    },
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Blogs",
+            "description": "API for blogs"
+        }
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/createBlog": {
+            "parameters": [
+                {
+                    "name": "blog",
+                    "in": "body",
+                    "required": true,
+                    "description": "The blog which is to be published.",
+                    "schema": {
+                        "properties": {
+                            "blog": {
+                                "$ref": "#/definitions/Blog"
+                            }
+                        }
+                    }
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "post": {
+                "tags": [
+                    "Blog"
+                ],
+                "summary": "Publish a new blog.",
+                "responses": {
+                    "201": {
+                        "description": "A new blog published.",
+                        "schema": {
+                            "properties": {
+                                "created": {
+                                    "type": "boolean"
+                                },
+                                "createdBlog": {
+                                    "$ref": "#/definitions/RespBlog"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to create blog.",
+                        "schema": {
+                            "properties": {
+                                "created": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteBlog": {
+            "parameters": [
+                {
+                    "name": "_id",
+                    "in": "body",
+                    "required": true,
+                    "description": "The id of the blog which is to be deleted.",
+                    "schema": {
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "post": {
+                "tags": [
+                    "Blog"
+                ],
+                "summary": "delete a blog.",
+                "responses": {
+                    "202": {
+                        "description": "A blog deleted succesfully.",
+                        "schema": {
+                            "properties": {
+                                "deleted": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unable to find the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "deleted": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to delete the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "deleted": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/updateBlog": {
+            "parameters": [
+                {
+                    "name": "_id",
+                    "in": "body",
+                    "required": true,
+                    "description": "The id of the blog which is to be updated.",
+                    "schema": {
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "blog",
+                    "in": "body",
+                    "required": true,
+                    "description": "The updates for the blog to be updated.",
+                    "schema": {
+                        "properties": {
+                            "blog": {
+                                "$ref": "#/definitions/Blog"
+                            }
+                        }
+                    }
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "post": {
+                "tags": [
+                    "Blog"
+                ],
+                "summary": "Update a blog.",
+                "responses": {
+                    "202": {
+                        "description": "A blog updated.",
+                        "schema": {
+                            "properties": {
+                                "updated": {
+                                    "type": "boolean"
+                                },
+                                "updatedBlog": {
+                                    "$ref": "#/definitions/RespBlog"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unable to find the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "updated": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to update the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "updated": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/readBlog": {
+            "parameters": [
+                {
+                    "name": "filters",
+                    "in": "body",
+                    "required": true,
+                    "description": "Filters for the blogs to be fetched",
+                    "schema": {
+                        "$ref": "#/definitions/RespBlog"
+                    }
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "post": {
+                "tags": [
+                    "Blog"
+                ],
+                "summary": "Filter blogs an fetch them.",
+                "responses": {
+                    "202": {
+                        "description": "Succesfully fetched blogs.",
+                        "schema": {
+                            "properties": {
+                                "fetched": {
+                                    "type": "boolean"
+                                },
+                                "blogs": {
+                                    "$ref": "#/definitions/RespBlogs"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unable to find blogs with given filter match.",
+                        "schema": {
+                            "properties": {
+                                "fetched": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to fetch blogs with given filter match.",
+                        "schema": {
+                            "properties": {
+                                "fetched": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Blog": {
+            "required": [
+                "title",
+                "content"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                }
+            }
+        },
+        "RespBlog": {
+            "required": [
+                "_id",
+                "title",
+                "content",
+                "author",
+                "createdAt",
+                "updatedAt"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "RespBlogs": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/RespBlog"
+            }
+        }
+    }
+}

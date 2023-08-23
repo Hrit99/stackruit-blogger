@@ -1,0 +1,328 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Cloud Endpoints + GCF",
+        "description": "Blogger restful webservice documentation.",
+        "license": {
+            "name": "Stackruit"
+        }
+    },
+    "host": "stackruitblogger-fry3u4ktqq-uc.a.run.app",
+    "schemes": ["https"],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/createBlog": {
+            "parameters": [
+                {
+                    "name": "blog",
+                    "in": "body",
+                    "required": true,
+                    "description": "The blog which is to be published.",
+                    "schema": {
+                        "properties": {
+                            "blog": {
+                                "$ref": "#/definitions/Blog"
+                            }
+                        }
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Publish a new blog.",
+                "operationId": "createBlog",
+                "x-google-backend": {
+                    "address": "https://us-central1-stackruit.cloudfunctions.net/createBlog"
+                },
+                "responses": {
+                    "201": {
+                        "description": "A new blog published.",
+                        "schema": {
+                            "properties": {
+                                "created": {
+                                    "type": "boolean"
+                                },
+                                "createdBlog": {
+                                    "$ref": "#/definitions/RespBlog"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to create blog.",
+                        "schema": {
+                            "properties": {
+                                "created": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteBlog": {
+            "parameters": [
+                {
+                    "name": "_id",
+                    "in": "body",
+                    "required": true,
+                    "description": "The id of the blog which is to be deleted.",
+                    "schema": {
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            ],
+            "post": {
+                "summary": "delete a blog.",
+                "operationId": "deleteBlog",
+                "x-google-backend": {
+                    "address": "https://us-central1-stackruit.cloudfunctions.net/deleteBlog"
+                },
+                "responses": {
+                    "202": {
+                        "description": "A blog deleted succesfully.",
+                        "schema": {
+                            "properties": {
+                                "deleted": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unable to find the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "deleted": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to delete the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "deleted": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/updateBlog": {
+            "parameters": [
+                {
+                    "name": "_id",
+                    "in": "body",
+                    "required": true,
+                    "description": "The id of the blog which is to be updated.",
+                    "schema": {
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "blog",
+                    "in": "body",
+                    "required": true,
+                    "description": "The updates for the blog to be updated.",
+                    "schema": {
+                        "properties": {
+                            "blog": {
+                                "$ref": "#/definitions/Blog"
+                            }
+                        }
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Update a blog.",
+                "operationId": "updateBlog",
+                "x-google-backend": {
+                    "address": "https://us-central1-stackruit.cloudfunctions.net/updateBlog"
+                },
+                "responses": {
+                    "202": {
+                        "description": "A blog updated.",
+                        "schema": {
+                            "properties": {
+                                "updated": {
+                                    "type": "boolean"
+                                },
+                                "updatedBlog": {
+                                    "$ref": "#/definitions/RespBlog"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unable to find the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "updated": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to update the blog whose id is passed.",
+                        "schema": {
+                            "properties": {
+                                "updated": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/readBlog": {
+            "parameters": [
+                {
+                    "name": "filters",
+                    "in": "body",
+                    "required": true,
+                    "description": "Filters for the blogs to be fetched",
+                    "schema": {
+                        "$ref": "#/definitions/RespBlog"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Filter blogs and fetch them.",
+                "operationId": "readBlog",
+                "x-google-backend": {
+                    "address": "https://us-central1-stackruit.cloudfunctions.net/readBlog"
+                },
+                "responses": {
+                    "202": {
+                        "description": "Succesfully fetched blogs.",
+                        "schema": {
+                            "properties": {
+                                "fetched": {
+                                    "type": "boolean"
+                                },
+                                "blogs": {
+                                    "$ref": "#/definitions/RespBlogs"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unable to find blogs with given filter match.",
+                        "schema": {
+                            "properties": {
+                                "fetched": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unable to fetch blogs with given filter match.",
+                        "schema": {
+                            "properties": {
+                                "fetched": {
+                                    "type": "boolean"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Blog": {
+            "required": [
+                "title",
+                "content"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                }
+            }
+        },
+        "RespBlog": {
+            "required": [
+                "_id",
+                "title",
+                "content",
+                "author",
+                "createdAt",
+                "updatedAt"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "RespBlogs": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/RespBlog"
+            }
+        }
+    }
+}
